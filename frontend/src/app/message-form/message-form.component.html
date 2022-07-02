@@ -1,0 +1,35 @@
+<div class="container">
+  <mat-list>
+    <mat-list-item *ngFor=" let chatMessage of chatMessages " class={{chatMessage.label}}>
+      {{chatMessage.content}} {{chatMessage.userName}}
+
+    </mat-list-item>
+
+  </mat-list>
+  {{currentUser.userName}}
+
+  <form (ngSubmit)=" onSubmit($event)
+  " #messageForm="ngForm">
+
+
+    <div class="form-group">
+      <table>
+
+        <tr>
+          <th>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <input type="text" matInput id="message" required [(ngModel)]="textInput" name="message" #name="ngModel"
+                placeholder="Enter text here">
+            </mat-form-field>
+          </th>
+          <th>
+            <button type="submit" mat-raised-button color="primary" name="Send" [disabled]="!messageForm.form.valid">
+              Send Message
+            </button>
+          </th>
+        </tr>
+
+      </table>
+    </div>
+  </form>
+</div>

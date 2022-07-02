@@ -1,0 +1,9 @@
+ .myChatMessage {
+   background-color: DodgerBlue;
+   text-align: right;
+ }
+
+ .notMyChatMessage {
+   background-color: aquamarine;
+   text-align: right;
+ }
