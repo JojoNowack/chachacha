@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: ./frontend
 
   deploy:
     runs-on: ubuntu-latest
@@ -54,3 +54,4 @@ jobs:
           app-name: 'ChaChaChat'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_975D635F1D93400BB8E5309781AFCB4C }}
           package: ./dist/hello-world-app
+ 
