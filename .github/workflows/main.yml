@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages via angular-cli-ghpages chachacha
+
+on: [push]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+
+    - name: Prepare and deploy
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        npm install
+    
+        ###
+        # Configure Angular first!
+        ####
+        # npm test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
+        # npm run webdriver-update-ci
+        # npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js --webdriver-update=false
+        ####
+        #
+        
+        git config --global user.email "jojo@mail.com"
+        git config --global user.name "jojodrei"
+        
+        #npm run ng build --base-href="https://jojonowack.github.io/AngularTest/"
+
+        #npx angular-cli-ghpages --dir=dist/cicd-test-project --no-silent
+        npm run ng -- deploy --base-href=https://jojonowack.github.io/chachacha/
