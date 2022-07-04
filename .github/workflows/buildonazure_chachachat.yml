@@ -52,6 +52,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'ChaChaChat'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_975D635F1D93400BB8E5309781AFCB4C }}
-          package: .
+          package: ./dist/hello-world-app
