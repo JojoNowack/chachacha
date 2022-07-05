@@ -46,6 +46,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
+          
+      - name: give order
+        run: |
+          echo  pwd
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -54,4 +58,4 @@ jobs:
           app-name: 'ChaChaChat'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B6A03CFDE7144533A889346CAA5E1E02 }}
-          package: ./dist/frontend
+          package: .frontend/dist/frontend
