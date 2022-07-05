@@ -20,7 +20,7 @@ export class WebsocketService {
   }
 
   private initializeWebsocket() {
-    this.connection = new WebSocket('ws://20.216.24.28:8080/chatSocket/');
+    this.connection = new WebSocket('ws://localhost:8080/chatSocket/');
     this.connection.onopen = this.onOpen.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
     this.connection.onerror = this.onError.bind(this);
