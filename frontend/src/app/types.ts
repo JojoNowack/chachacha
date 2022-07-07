@@ -29,7 +29,7 @@ export class User {
     }
   }
 }
-
+//public im constructor davor und dann kann man sich das doppelte sparen glaub ich
 export class Room {
   roomName: string;
   users: { [email: string]: string };

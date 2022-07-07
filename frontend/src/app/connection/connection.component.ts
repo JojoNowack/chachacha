@@ -12,6 +12,8 @@ export class ConnectionComponent implements OnInit {
   constructor(private webSocketService: WebsocketService, public debugService: DebugService) { }
 
   ngOnInit(): void {
+    //to satisfy linting ;)
+    console.log("ConnectionComponent is started");
   }
 
 }

@@ -10,6 +10,8 @@ export class MessagesComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    //to satisfy linting ;)
+    console.log("MessageComponent is started");
   }
 
 }

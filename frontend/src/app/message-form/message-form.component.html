@@ -1,12 +1,15 @@
 <div class="container">
   <mat-list>
-    <mat-list-item *ngFor=" let chatMessage of chatMessages " class={{chatMessage.label}}>
+    <mat-list-item   *ngFor=" let chatMessage of chatMessages " class={{chatMessage.label}}>
+
       {{chatMessage.content}} {{chatMessage.userName}}
 
     </mat-list-item>
 
   </mat-list>
-  {{currentUser.userName}}
+ Your Username: {{currentUser.userName}}
+  <br>
+  Current Room: {{getCurrentRoomName()}}
 
   <form (ngSubmit)=" onSubmit($event)
   " #messageForm="ngForm">

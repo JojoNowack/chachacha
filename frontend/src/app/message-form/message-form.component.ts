@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from "../user.service";
-import { RoomService } from "../room.service";
-import { ChatMessage, User } from "../types";
+import {Component, OnInit} from '@angular/core';
+import {UserService} from "../user.service";
+import {RoomService} from "../room.service";
+import {ChatMessage, User} from "../types";
 
 
 @Component({
@@ -67,16 +67,19 @@ export class MessageFormComponent implements OnInit {
 
   onSubmit(event: any) {
     console.log("button was pushed and this text was sent: " + this.textInput);
-    const roomName: string = "test"; // todo get the real room
-    const email: string = "u1@test.de";
-    const invite: boolean = true;
-    this.roomService.joinRoom(roomName);
-    this.roomService.setInviteRoom("test", true);
-    this.roomService.inviteToRoom(roomName, email, invite);
+    const roomName: string = this.roomService.getCurrentRoomName(); // todo get the real room
+    //const email: string = "u1@test.de";
+    //const invite: boolean = true;
+    //this.roomService.joinRoom(roomName);
+    //this.roomService.setInviteRoom("test", true);
+    //this.roomService.inviteToRoom(roomName, email, invite);
     // this.roomService.setVoiceRoom(roomName, true);
     // this.roomService.grantVoice(roomName, "phe@test.de", false);
     // this.roomService.grantOp(roomName, "u1@test.de", false);
     this.roomService.sendMessageToRoom(roomName, this.textInput);
     this.textInput = "";
+  }
+  getCurrentRoomName():string{
+    return this.roomService.getCurrentRoomName();
   }
 }
