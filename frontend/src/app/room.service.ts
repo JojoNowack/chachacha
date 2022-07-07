@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ReplaySubject} from 'rxjs';
 import {
   ChatMessage,
   InvitedOfRoomRequiredEvent,
@@ -13,10 +13,10 @@ import {
   Room,
   User
 } from './types';
-import { WebsocketService } from './websocket.service';
-import { BehaviorSubject } from "rxjs";
-import { Observable } from "rxjs";
-import { UserService } from './user.service';
+import {WebsocketService} from './websocket.service';
+import {BehaviorSubject} from "rxjs";
+import {Observable} from "rxjs";
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +38,7 @@ export class RoomService {
 
   currentUser: User = new User;
   loggedIn: boolean = false;
+  currentRoomName: string = "";
 
   constructor(private webSocketService: WebsocketService, private userService: UserService) {
     this.isLoggedIn();
@@ -55,6 +56,10 @@ export class RoomService {
     this.userService.getUser().subscribe(user => {
       this.currentUser = user;
     })
+  }
+
+  getCurrentRoomName(): string {
+    return this.currentRoomName;
   }
 
   private handleEvents() {
@@ -223,42 +228,43 @@ export class RoomService {
   }
 
   joinRoom(roomName: string): void {
-    let data = { "roomName": roomName };
+    let data = {"roomName": roomName};
     this.webSocketService.sendCommand('JoinRoom', data);
+    this.currentRoomName = roomName;
   }
 
   leaveRoom(roomName: string): void {
-    let data = { "roomName": roomName };
+    let data = {"roomName": roomName};
     this.webSocketService.sendCommand('LeaveRoom', data);
   }
 
   sendMessageToRoom(roomName: string, message: string): void {
-    let data = { "roomName": roomName, "message": message }
+    let data = {"roomName": roomName, "message": message}
     this.webSocketService.sendCommand('SendMessageToRoom', data);
   }
 
   setInviteRoom(roomName: string, inviteRequired: boolean) {
-    let data = { "roomName": roomName, "inviteRequired": inviteRequired }
+    let data = {"roomName": roomName, "inviteRequired": inviteRequired}
     this.webSocketService.sendCommand('SetInviteRoom', data);
   }
 
   setVoiceRoom(roomName: string, voice: boolean) {
-    let data = { "roomName": roomName, "voice": voice }
+    let data = {"roomName": roomName, "voice": voice}
     this.webSocketService.sendCommand('SetVoiceRoom', data);
   }
 
   grantOp(roomName: string, email: string, op: boolean) {
-    let data = { "roomName": roomName, "email": email, "op": op }
+    let data = {"roomName": roomName, "email": email, "op": op}
     this.webSocketService.sendCommand('GrantOp', data);
   }
 
   grantVoice(roomName: string, email: string, voice: boolean) {
-    let data = { "roomName": roomName, "email": email, "voice": voice }
+    let data = {"roomName": roomName, "email": email, "voice": voice}
     this.webSocketService.sendCommand('GrantVoice', data);
   }
 
   inviteToRoom(roomName: string, email: string, invite: boolean) {
-    let data = { "roomName": roomName, "email": email, "invite": invite }
+    let data = {"roomName": roomName, "email": email, "invite": invite}
     this.webSocketService.sendCommand('InviteToRoom', data);
   }
 

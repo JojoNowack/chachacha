@@ -11,6 +11,7 @@ import {LoginFormComponent} from './login-form/login-form.component';
 import {MessageFormComponent} from './message-form/message-form.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialExampleModule} from '../material.module';
+import { RegisterFormComponent } from './register-form/register-form.component';
 
 @NgModule({
   declarations: [
@@ -19,14 +20,14 @@ import {MaterialExampleModule} from '../material.module';
     ConnectionComponent,
     MessagesComponent,
     LoginFormComponent,
-    MessageFormComponent
+    MessageFormComponent,
+    RegisterFormComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
-
     MaterialExampleModule
   ],
   providers: [],
