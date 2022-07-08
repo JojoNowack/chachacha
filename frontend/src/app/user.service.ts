@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {
   ChangeUserPasswordEvent,
   ChangePasswordFailedEvent,
@@ -10,7 +10,7 @@ import {
   UserRenameEvent,
   User
 } from './types';
-import { WebsocketService } from './websocket.service';
+import {WebsocketService} from './websocket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -141,7 +141,7 @@ export class UserService {
   }
 
   login(email: string, password: string): void {
-    let data = { "email": email, "password": password };
+    let data = {"email": email, "password": password};
     this.webSocketService.sendCommand('Login', data);
   }
 
@@ -151,17 +151,17 @@ export class UserService {
   }
 
   registerUser(email: string, name: string, password: string): void {
-    let data = { "email": email, "name": name, "password": password };
+    let data = {"email": email, "name": name, "password": password};
     this.webSocketService.sendCommand('RegisterUser', data);
   }
 
   changeUserPassword(email: string, oldPassword: string, newPassword: string): void {
-    let data = { "email": email, "oldPassword": oldPassword, "newPassword": newPassword }
+    let data = {"email": email, "oldPassword": oldPassword, "newPassword": newPassword}
     this.webSocketService.sendCommand('ChangeUserPassword', data);
   }
 
   renameUser(email: string, userName: string): void {
-    let data = { "email": email, "userName": userName }
+    let data = {"email": email, "userName": userName}
     this.webSocketService.sendCommand('RenameUser', data);
   }
 
@@ -172,4 +172,5 @@ export class UserService {
   getUser(): Observable<User> {
     return this.user.asObservable();
   }
+
 }

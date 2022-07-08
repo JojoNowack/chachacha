@@ -1,9 +1,16 @@
- .myChatMessage {
-   background-color: DodgerBlue;
+
+.myChatMessage {
+   background-color: green;
    text-align: right;
+  align-self: flex-end;
+  border-left: 200px solid white;
+
  }
 
  .notMyChatMessage {
    background-color: aquamarine;
-   text-align: right;
+   text-align: left;
  }
+
+
+
