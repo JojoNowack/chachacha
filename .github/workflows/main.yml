@@ -18,7 +18,8 @@ jobs:
     - name: Prepare and deploy
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
+      run: |         
+        sed -i 's/${{secrets.DEPLOYIP}}/localhost/g' ./frontend/src/app/websocket.service.ts #falls die ip eingetragen ist mache localhost draus damit wenigstens was angeeigt wird
         cd frontend
         npm install
     
