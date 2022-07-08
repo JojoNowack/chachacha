@@ -27,7 +27,7 @@ jobs:
       - name: change server and dir
         run: |
            cd frontend
-           sed -i 's/localhost/20.233.10.50/g' /src/app/websocket.service.ts
+           sed -i 's/localhost/20.233.10.50/g' ./src/app/websocket.service.ts
 
       - name: npm install, build, and lint
         run: |
