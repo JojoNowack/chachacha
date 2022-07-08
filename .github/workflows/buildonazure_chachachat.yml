@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  buildanddeploy:
     runs-on: ubuntu-latest
     environment:
       name: 'Production'
@@ -32,6 +32,11 @@ jobs:
           npm run lint --if-present
           #npm run test --if-present
           
+      - name: give order
+        run: |
+          pwd
+          ls
+          
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -39,7 +44,7 @@ jobs:
           app-name: 'ChaChaChat'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B6A03CFDE7144533A889346CAA5E1E02 }}
-          package: ./dist/frontend
+          package: ./frontend/dist/frontend
 
     #  - name: Upload artifact for deployment job
      #   uses: actions/upload-artifact@v2
