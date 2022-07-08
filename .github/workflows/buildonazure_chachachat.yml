@@ -26,7 +26,7 @@ jobs:
           
       - name: change server and dir
         run: |           
-           sed -i 's/localhost/20.233.10.50/g' .frontend/src/app/websocket.service.ts
+           sed -i 's/localhost/${{secrets.DEPLOYIP}}/g' .frontend/src/app/websocket.service.ts
 
       - name: npm install, build, and lint
         run: |
