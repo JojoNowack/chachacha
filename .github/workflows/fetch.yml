@@ -30,7 +30,7 @@ jobs:
         ls
         mkdir otherbranches
         cd otherbranches
-        git clone https://gitlab-ci-token:ksKqmNstvqCxLMbP124Q@r-n-d.informatik.hs-augsburg.de:8080/hof/chachachat
+        git clone https://gitlab-ci-token:ksKqmNstvqCxLMbP124Q@r-n-d.informatik.hs-augsburg.de:8080/hof/chachachat.git
         ls
       
 
