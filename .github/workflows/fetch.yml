@@ -19,13 +19,16 @@ jobs:
     - name: Clone supercharge docs repository
       uses: actions/checkout@v2
       with:
-        repository: supercharge/docs
+        repository: https://r-n-d.informatik.hs-augsburg.de:8080/hof/chachachat.git
+        token: ${{ secrets.RNDTOKEN }}
         path: otherbranches/priv
         ref: main
         
     - name: list
       run: |
         pwd
+        ls
+        cd otherbranches
         ls
       
 
