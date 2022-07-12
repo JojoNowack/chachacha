@@ -32,9 +32,11 @@ jobs:
         run: |
           cd frontend
           npm install
-          npm run build --if-present
-          npm run lint --if-present
           npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+          npm run lint --if-present
+          npm run build --if-present
+          
+          
           
       - name: list files
         run: |
