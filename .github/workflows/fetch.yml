@@ -22,5 +22,11 @@ jobs:
         repository: supercharge/docs
         path: otherbranches/priv
         ref: main
+        
+    - name: list
+      run: |
+        pwd
+        ls
+      
 
   
