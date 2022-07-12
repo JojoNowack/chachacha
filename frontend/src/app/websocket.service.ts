@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DebugService } from "./debug.service";
 import { BehaviorSubject, Observable, ReplaySubject } from "rxjs";
-import { filter } from "rxjs/operators";
 import { COMMANDS } from './mock-commands';
-import { SocketIdEvent, LoggedInEvent, LogginFailedEvent, LoggedOutEvent } from './types';
+import { SocketIdEvent } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +10,8 @@ import { SocketIdEvent, LoggedInEvent, LogginFailedEvent, LoggedOutEvent } from 
 export class WebsocketService {
 
   private connection?: WebSocket;
-  private readonly messages = new ReplaySubject<MessageEvent>();
-  private readonly socketIdMessages = new ReplaySubject<SocketIdEvent>();
+  private readonly messages = new ReplaySubject<MessageEvent>(1);
+  private readonly socketIdMessages = new ReplaySubject<SocketIdEvent>(1);
   readonly id = new BehaviorSubject<number>(-1);
 
   constructor(public debugService: DebugService) {
@@ -20,7 +19,8 @@ export class WebsocketService {
   }
 
   private initializeWebsocket() {
-    this.connection = new WebSocket('ws://20.233.10.50:8080/chatSocket/');
+    //this.connection = new WebSocket('ws://20.216.24.28:8080/chatSocket/');
+    this.connection = new WebSocket('ws://localhost:8080/chatSocket/');
     this.connection.onopen = this.onOpen.bind(this);
     this.connection.onmessage = this.onMessage.bind(this);
     this.connection.onerror = this.onError.bind(this);

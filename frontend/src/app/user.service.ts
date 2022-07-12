@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import {
   ChangeUserPasswordEvent,
   ChangePasswordFailedEvent,
@@ -10,26 +10,26 @@ import {
   UserRenameEvent,
   User
 } from './types';
-import {WebsocketService} from './websocket.service';
+import { WebsocketService } from './websocket.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private readonly changeUserPasswordMessages = new ReplaySubject<ChangeUserPasswordEvent>();
-  private readonly changePasswordFailedMessages = new ReplaySubject<ChangePasswordFailedEvent>();
-  private readonly loggedInMessages = new ReplaySubject<LoggedInEvent>();
-  private readonly loggedOutMessages = new ReplaySubject<LoggedOutEvent>();
-  private readonly logginFailedMessages = new ReplaySubject<LogginFailedEvent>();
-  private readonly userRegisteredMessages = new ReplaySubject<UserRegisteredEvent>();
-  private readonly userRenameMessages = new ReplaySubject<UserRenameEvent>();
+  private readonly changeUserPasswordMessages = new ReplaySubject<ChangeUserPasswordEvent>(1);
+  private readonly changePasswordFailedMessages = new ReplaySubject<ChangePasswordFailedEvent>(1);
+  private readonly loggedInMessages = new ReplaySubject<LoggedInEvent>(1);
+  private readonly loggedOutMessages = new ReplaySubject<LoggedOutEvent>(1);
+  private readonly logginFailedMessages = new ReplaySubject<LogginFailedEvent>(1);
+  private readonly userRegisteredMessages = new ReplaySubject<UserRegisteredEvent>(1);
+  private readonly userRenameMessages = new ReplaySubject<UserRenameEvent>(1);
 
   private readonly loggedIn = new BehaviorSubject<boolean>(false);
   private readonly user = new BehaviorSubject<User>(new User());
   private readonly id = new BehaviorSubject<number>(-1);
-  private readonly userRegistered = new BehaviorSubject<User>(new User());
-  private readonly registered = new BehaviorSubject<boolean>(false);
+  // private readonly userRegistered = new BehaviorSubject<User>(new User());
+  // private readonly registered = new BehaviorSubject<boolean>(false);
 
   constructor(private webSocketService: WebsocketService) {
     let id = this.webSocketService.getId();
@@ -133,15 +133,15 @@ export class UserService {
   }
 
   handleUserRegisteredMessages(userRegistered: UserRegisteredEvent): void {
-    if (this.id.getValue() === userRegistered.id) {
-      let user = new User(userRegistered.id, userRegistered.email, userRegistered.name);
-      this.userRegistered.next(user);
-      this.registered.next(true);
-    }
+    // if (this.id.getValue() === userRegistered.id) {
+    //   let user = new User(userRegistered.id, userRegistered.email, userRegistered.name);
+    //   this.userRegistered.next(user);
+    //   this.registered.next(true);
+    // }
   }
 
   login(email: string, password: string): void {
-    let data = {"email": email, "password": password};
+    let data = { "email": email, "password": password };
     this.webSocketService.sendCommand('Login', data);
   }
 
@@ -151,17 +151,17 @@ export class UserService {
   }
 
   registerUser(email: string, name: string, password: string): void {
-    let data = {"email": email, "name": name, "password": password};
+    let data = { "email": email, "name": name, "password": password };
     this.webSocketService.sendCommand('RegisterUser', data);
   }
 
   changeUserPassword(email: string, oldPassword: string, newPassword: string): void {
-    let data = {"email": email, "oldPassword": oldPassword, "newPassword": newPassword}
+    let data = { "email": email, "oldPassword": oldPassword, "newPassword": newPassword }
     this.webSocketService.sendCommand('ChangeUserPassword', data);
   }
 
   renameUser(email: string, userName: string): void {
-    let data = {"email": email, "userName": userName}
+    let data = { "email": email, "userName": userName }
     this.webSocketService.sendCommand('RenameUser', data);
   }
 

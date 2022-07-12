@@ -1,16 +1,16 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {RoomsComponent} from './rooms/rooms.component';
-import {ConnectionComponent} from './connection/connection.component';
-import {MessagesComponent} from './messages/messages.component';
-import {FormsModule} from "@angular/forms";
-import {LoginFormComponent} from './login-form/login-form.component';
-import {MessageFormComponent} from './message-form/message-form.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialExampleModule} from '../material.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { RoomsComponent } from './rooms/rooms.component';
+import { ConnectionComponent } from './connection/connection.component';
+import { MessagesComponent } from './messages/messages.component';
+import { FormsModule } from "@angular/forms";
+import { LoginFormComponent } from './login-form/login-form.component';
+import { MessageFormComponent } from './message-form/message-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialExampleModule } from '../material.module';
 import { RegisterFormComponent } from './register-form/register-form.component';
 
 @NgModule({

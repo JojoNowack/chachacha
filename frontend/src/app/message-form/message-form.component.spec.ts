@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { MessageFormComponent } from './message-form.component';
 
@@ -8,9 +9,10 @@ describe('MessageFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MessageFormComponent ]
+      declarations: [MessageFormComponent],
+      imports: [FormsModule],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

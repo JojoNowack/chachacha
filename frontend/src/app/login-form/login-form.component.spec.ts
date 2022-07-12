@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { LoginFormComponent } from './login-form.component';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {LoginFormComponent} from './login-form.component';
+import {FormsModule} from "@angular/forms";
 
 describe('LoginFormComponent', () => {
   let component: LoginFormComponent;
@@ -8,9 +8,10 @@ describe('LoginFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LoginFormComponent ]
+      declarations: [LoginFormComponent],
+      imports: [FormsModule],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -22,4 +23,7 @@ describe('LoginFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
+
+
