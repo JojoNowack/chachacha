@@ -16,19 +16,21 @@ jobs:
     # While cloning the repository:
     #   - it clones the repo into the given `path`
     #   - it checks out the branch defined at `ref`
-    - name: Clone supercharge docs repository
-      uses: actions/checkout@v2
-      with:
-        repository: https://r-n-d.informatik.hs-augsburg.de:8080/hof/chachachat.git
-        token: ${{ secrets.RNDTOKEN }}
-        path: otherbranches/priv
-        ref: main
+   # - name: Clone supercharge docs repository
+   #   uses: actions/checkout@v2
+   #   with:
+    #    repository: https://r-n-d.informatik.hs-augsburg.de:8080/hof/chachachat.git
+    #    token: ${{ secrets.RNDTOKEN }}
+    #    path: otherbranches/priv
+      #  ref: main
         
     - name: list
       run: |
         pwd
         ls
+        mkdir otherbranches
         cd otherbranches
+        git clone https://gitlab-ci-token:${{secrets.RNDTOKEN}}@r-n-d.informatik.hs-augsburg.de:8080/hof/chachachat
         ls
       
 
