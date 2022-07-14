@@ -11,7 +11,6 @@ export class RoomsComponent implements OnInit {
   //todo mit room service verbinden?
   readonly rooms: Room[] = [];
   newRoomName: string = "";
-
   constructor(private roomService: RoomService) {
   }
 
