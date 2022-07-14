@@ -29,6 +29,7 @@ export class User {
     }
   }
 }
+
 //public im constructor davor und dann kann man sich das doppelte sparen glaub ich
 export class Room {
   roomName: string;
@@ -41,13 +42,13 @@ export class Room {
   messages: ChatMessage[];
 
   constructor(roomName: string,
-    users: { [email: string]: string } = {},
-    voices: { [email: string]: boolean } = {},
-    ops: { [email: string]: boolean } = {},
-    invites: { [email: string]: boolean } = {},
-    inviteRequired: boolean = false,
-    voiceInRoomRequired: boolean = false,
-    messages: ChatMessage[] = []) {
+              users: { [email: string]: string } = {},
+              voices: { [email: string]: boolean } = {},
+              ops: { [email: string]: boolean } = {},
+              invites: { [email: string]: boolean } = {},
+              inviteRequired: boolean = false,
+              voiceInRoomRequired: boolean = false,
+              messages: ChatMessage[] = []) {
 
     this.roomName = roomName;
     this.users = users;
@@ -60,7 +61,7 @@ export class Room {
   }
 }
 
-// Todo
+// Todo @jojo
 // Make flat, {[roomName]: ChatMessage[]}, ...
 
 export class ChatMessage {
@@ -72,7 +73,7 @@ export class ChatMessage {
   readonly id?: number;
   ack: boolean;
 
-  constructor(userName: string, roomName: string, content: string, label?: string, ack: boolean = false) {
+  constructor(userName: string, roomName: string, content: string, public date: string, label?: string, ack: boolean = false) {
     this.userName = userName;
     this.roomName = roomName;
     this.content = content;

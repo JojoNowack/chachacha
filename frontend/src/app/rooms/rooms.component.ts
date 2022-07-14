@@ -29,9 +29,18 @@ export class RoomsComponent implements OnInit {
       console.log("todo new room");
       this.rooms.push(new Room(this.newRoomName));
     } else {
-      console.log(event.submitter.name);
-      this.roomService.joinRoom(event.submitter.name);
+      //todo eigene methode machen @jojo
+      //console.log(event.submitter);
+      if (event.submitter.name !== "") {
+        this.roomService.joinRoom(event.submitter.name);
+      }
     }
   }
 
+  leaveItemClicked(roomName: string) {
+    console.log("leave " + roomName);
+    this.roomService.leaveRoom(roomName);
+
+    //this.selectedMenu = menuItem.menuLinkText;
+  }
 }

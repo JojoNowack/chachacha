@@ -2,20 +2,41 @@
   Room Form
   <br>
   <mat-form-field class="example-full-width" appearance="fill">
-    <input type="text" matInput id="roomName" required [(ngModel)]="newRoomName" name="roomName" #name="ngModel"
+    <input type="text" matInput id="roomName" required [(ngModel)]="newRoomName" name="roomName"
+           #name="ngModel"
            placeholder="Enter new roomname here">
   </mat-form-field>
-  <button type="submit" mat-raised-button color="primary" name="newRoom" >
+  <button type="submit" mat-raised-button color="primary" name="newRoom">
     Create new Room
   </button>
-<mat-list>
-  <mat-list-item *ngFor=" let room of rooms ">
+  <mat-list>
+    <mat-list-item *ngFor=" let room of rooms ">
+      <mat-divider></mat-divider>
+      <button type="submit" mat-button name="{{room.roomName}}">
+        {{room.roomName}}
+      </button>
+      <div id="menutoright">
+        <button mat-icon-button [matMenuTriggerFor]="menu"
+                aria-label="Menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button (click)="leaveItemClicked(room.roomName)" mat-menu-item>
+            <mat-icon>meeting_room</mat-icon>
+            <span>Leave Chat</span>
+          </button>
+          <button mat-menu-item disabled>
+            <mat-icon>voicemail</mat-icon>
+            <span>Check voice mail</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>notifications_off</mat-icon>
+            <span>Disable alerts</span>
+          </button>
 
-    <button type="submit" mat-raised-button color="primary" name="{{room.roomName}}" >
-      {{room.roomName}}
-    </button>
-
-  </mat-list-item>
-</mat-list>
+        </mat-menu>
+      </div>
+    </mat-list-item>
+  </mat-list>
 
 </form>

@@ -150,13 +150,13 @@ export class RoomService {
     // Todo
     // Better data structure would be a hast-table with room key and message arrays
     // same could be done for other room-specific information
-
-    let chatMessage = new ChatMessage(messageSentToRoom.userName, messageSentToRoom.roomName, messageSentToRoom.message);
-    let currentChatMessages = this.chatMessages.getValue();
-    currentChatMessages.push(chatMessage);
-    this.chatMessages.next(currentChatMessages);
-
-    this.newChatMessage.next(chatMessage);
+    if (messageSentToRoom.userName === this.currentUser.userName) {
+      let chatMessage = new ChatMessage(messageSentToRoom.userName, messageSentToRoom.roomName, messageSentToRoom.message, this.getCurrentDate(), "myChatMessage");
+      this.createNewMessage(chatMessage);
+    } else {
+      let chatMessage = new ChatMessage(messageSentToRoom.userName, messageSentToRoom.roomName, messageSentToRoom.message, this.getCurrentDate(), "notMyChatMessage");
+      this.createNewMessage(chatMessage);
+    }
 
     console.log(this.rooms.getValue());
   }
@@ -186,18 +186,35 @@ export class RoomService {
     } else {
       currentRooms[roomIndex].users[roomJoined.email] = roomJoined.name;
     }
-
+    let chatMessage = new ChatMessage("system", roomJoined.roomName, "" + roomJoined.name + " joined this room", this.getCurrentDate(), "systemMessage");
+    this.createNewMessage(chatMessage);
     this.rooms.next(currentRooms);
+  }
+
+  private createNewMessage(chatMessage: ChatMessage) {
+    let currentChatMessages = this.chatMessages.getValue();
+    currentChatMessages.push(chatMessage);
+    this.chatMessages.next(currentChatMessages);
+
+    this.newChatMessage.next(chatMessage);
   }
 
   handleRoomLeftMessages(roomLeft: RoomLeftEvent): void {
     let currentRooms = this.rooms.getValue();
 
-    if (roomLeft.email !== this.currentUser.email) {
-      let roomIndex = currentRooms.findIndex((room => room.roomName === roomLeft.roomName));
-      delete currentRooms[roomIndex].users[roomLeft.email];
 
+    if (roomLeft.email !== this.currentUser.email) {
+      //someone else left the room
+      let roomIndex = currentRooms.findIndex((room => room.roomName === roomLeft.roomName));
+      let chatMessage = new ChatMessage("system", roomLeft.roomName, roomLeft.email + " left this room", this.getCurrentDate(), "systemMessage");
+      this.createNewMessage(chatMessage);
+      delete currentRooms[roomIndex].users[roomLeft.email];
       this.rooms.next(currentRooms);
+    } else {
+      //you left the room
+      this.currentRoomName = "";
+      let chatMessage = new ChatMessage("system", roomLeft.roomName, "You left this room", this.getCurrentDate(), "systemMessage");
+      this.createNewMessage(chatMessage);
     }
   }
 
@@ -274,5 +291,16 @@ export class RoomService {
 
   getNewChatMessage(): Observable<ChatMessage> {
     return this.newChatMessage.asObservable() as Observable<ChatMessage>;
+  }
+
+  getRooms(): Observable<Room[]> {
+    return this.rooms.asObservable()as Observable<Room[]> ;
+  }
+
+  public getCurrentDate() {
+    let dateTime = new Date();
+    let min = dateTime.getMinutes();
+    let hour = dateTime.getHours();
+    return "" + hour + ":" + min;
   }
 }
