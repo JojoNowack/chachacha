@@ -1,0 +1,60 @@
+<form (ngSubmit)="onSubmit($event)" #roomsForm="ngForm">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input type="text" matInput id="roomName" required [(ngModel)]="newRoomName" name="roomName"
+           #name="ngModel"
+           placeholder="Enter new roomname here">
+  </mat-form-field>
+
+  <button type="submit" mat-raised-button color="primary" name="newRoom">
+    Create new Room
+  </button>
+
+  <mat-list>
+
+    <mat-list-item *ngFor=" let room of rooms ">
+
+      <mat-divider></mat-divider>
+
+      <button type="submit" mat-button name="{{room.roomName}}">
+        {{room.roomName}}
+      </button>
+
+      <div id="menutoright">
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+
+
+          <button mat-menu-item (click)="setVoiceButtonClicked(room.roomName,true)">
+            <mat-icon>voice_over_off</mat-icon>
+            <span>Voice In Room Required</span>
+          </button>
+          <button mat-menu-item (click)="setVoiceButtonClicked(room.roomName,false)">
+            <mat-icon>keyboard_voice</mat-icon>
+            <span>Everyone can write</span>
+          </button>
+          <button mat-menu-item (click)="setInviteRoomButtonClicked(room.roomName,false)">
+            <mat-icon>lock_open</mat-icon>
+            <span>Everyone can join this Group</span>
+          </button>
+          <button mat-menu-item (click)="setInviteRoomButtonClicked(room.roomName,true)">
+            <mat-icon>lock</mat-icon>
+            <span>One need an invite to join</span>
+          </button>
+
+          <button mat-menu-item (click)="leaveItemClicked(room.roomName)">
+            <mat-icon>meeting_room</mat-icon>
+            <span>Leave Chat</span>
+          </button>
+
+
+        </mat-menu>
+      </div>
+
+    </mat-list-item>
+  </mat-list>
+
+</form>

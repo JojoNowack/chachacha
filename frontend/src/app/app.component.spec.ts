@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {AppComponent} from './app.component';
-import {RoomsComponent} from "./rooms/rooms.component";
-import {FormsModule} from "@angular/forms";
-import {MessageFormComponent} from "./message-form/message-form.component";
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from './app.component';
+import { RoomsComponent } from "./home/rooms/rooms.component";
+import { FormsModule } from "@angular/forms";
+import { MessagesComponent } from "./home/messages/messages.component";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
