@@ -2,3 +2,13 @@
   align-items: end;
   margin: 0px 0px 0px auto;
 }
+
+mat-list {
+  overflow-y: scroll; /* Show scrollbars */
+  overflow-x: hidden;
+  height: 52vh;
+}
+
+#inputForm {
+  width: 80%;
+}

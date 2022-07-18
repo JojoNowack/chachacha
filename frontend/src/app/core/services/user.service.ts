@@ -9,7 +9,8 @@ import {
   LoggedOutEvent,
   LogginFailedEvent,
   UserRegisteredEvent,
-  UserRenameEvent,
+  UserRenamedEvent,
+  UserDeletedEvent,
 } from '../models/backend-event-types';
 import { User } from '../models/chat-types';
 import { ResourceManagement } from '../utils/resourceManagement';
@@ -20,13 +21,14 @@ import { WebsocketService } from './websocket.service';
 })
 export class UserService extends ResourceManagement implements OnDestroy {
 
-  private readonly changeUserPasswordMessages = new ReplaySubject<ChangeUserPasswordEvent>(1);
-  private readonly changePasswordFailedMessages = new ReplaySubject<ChangePasswordFailedEvent>(1);
-  private readonly loggedInMessages = new ReplaySubject<LoggedInEvent>(1);
-  private readonly loggedOutMessages = new ReplaySubject<LoggedOutEvent>(1);
-  private readonly logginFailedMessages = new ReplaySubject<LogginFailedEvent>(1);
-  private readonly userRegisteredMessages = new ReplaySubject<UserRegisteredEvent>(1);
-  private readonly userRenameMessages = new ReplaySubject<UserRenameEvent>(1);
+  private readonly changeUserPasswordMessages = new ReplaySubject<ChangeUserPasswordEvent>(1, 1000);
+  private readonly changePasswordFailedMessages = new ReplaySubject<ChangePasswordFailedEvent>(1, 1000);
+  private readonly loggedInMessages = new ReplaySubject<LoggedInEvent>(1, 1000);
+  private readonly loggedOutMessages = new ReplaySubject<LoggedOutEvent>(1, 1000);
+  private readonly logginFailedMessages = new ReplaySubject<LogginFailedEvent>(1, 1000);
+  private readonly userRegisteredMessages = new ReplaySubject<UserRegisteredEvent>(1, 1000);
+  private readonly userRenamedMessages = new ReplaySubject<UserRenamedEvent>(1, 1000);
+  private readonly userDeletedMessages = new ReplaySubject<UserDeletedEvent>(1, 1000);
 
   private readonly loggedIn = new BehaviorSubject<boolean>(false);
   private readonly user = new BehaviorSubject<User>(new User());
@@ -42,7 +44,9 @@ export class UserService extends ResourceManagement implements OnDestroy {
     id
       .pipe(takeUntil(this.preDestroy))
       .subscribe((id) => {
-        this.id.next(id);
+        if (id !== undefined) {
+          this.id.next(id);
+        }
       })
     this.handleEvents();
   }
@@ -51,43 +55,60 @@ export class UserService extends ResourceManagement implements OnDestroy {
     this.destroy();
   }
 
+  reset(): void {
+    this.changeUserPasswordMessages.next(undefined as any);
+    this.changePasswordFailedMessages.next(undefined as any);
+    this.loggedInMessages.next(undefined as any);
+    this.loggedOutMessages.next(undefined as any);
+    this.logginFailedMessages.next(undefined as any);
+    this.userRegisteredMessages.next(undefined as any);
+    this.userRenamedMessages.next(undefined as any);
+    this.userDeletedMessages.next(undefined as any);
+  }
+
   private handleEvents() {
     const messages = this.webSocketService.getMessages();
     messages
       .pipe(takeUntil(this.preDestroy))
       .subscribe((message) => {
-        let data = JSON.parse(message.data);
-        let type: string = data.type;
-        let value = data.value;
-        switch (type) {
-          case 'ChangeUserPassword':
-            let changeUserPasswordEvent: ChangeUserPasswordEvent = value;
-            this.changeUserPasswordMessages.next(changeUserPasswordEvent);
-            break;
-          case 'ChangePasswordFailed':
-            let changePasswordFailedEvent: ChangePasswordFailedEvent = value;
-            this.changePasswordFailedMessages.next(changePasswordFailedEvent);
-            break;
-          case 'LoggedIn':
-            let loggedInEvent: LoggedInEvent = value;
-            this.loggedInMessages.next(loggedInEvent);
-            break;
-          case 'LoggedOut':
-            let loggedOutEvent: LoggedOutEvent = value;
-            this.loggedOutMessages.next(loggedOutEvent);
-            break;
-          case 'LogginFailed':
-            let logginFailedEvent: LogginFailedEvent = value;
-            this.logginFailedMessages.next(logginFailedEvent);
-            break;
-          case 'UserRegistered':
-            let userRegisteredEvent: UserRegisteredEvent = value;
-            this.userRegisteredMessages.next(userRegisteredEvent);
-            break;
-          case 'UserRename':
-            let userRenameEvent: UserRenameEvent = value;
-            this.userRenameMessages.next(userRenameEvent);
-            break;
+        if (message !== undefined) {
+          let data = JSON.parse(message.data);
+          let type: string = data.type;
+          let value = data.value;
+          switch (type) {
+            case 'ChangeUserPassword':
+              let changeUserPasswordEvent: ChangeUserPasswordEvent = value;
+              this.changeUserPasswordMessages.next(changeUserPasswordEvent);
+              break;
+            case 'ChangePasswordFailed':
+              let changePasswordFailedEvent: ChangePasswordFailedEvent = value;
+              this.changePasswordFailedMessages.next(changePasswordFailedEvent);
+              break;
+            case 'LoggedIn':
+              let loggedInEvent: LoggedInEvent = value;
+              this.loggedInMessages.next(loggedInEvent);
+              break;
+            case 'LoggedOut':
+              let loggedOutEvent: LoggedOutEvent = value;
+              this.loggedOutMessages.next(loggedOutEvent);
+              break;
+            case 'LogginFailed':
+              let logginFailedEvent: LogginFailedEvent = value;
+              this.logginFailedMessages.next(logginFailedEvent);
+              break;
+            case 'UserRegistered':
+              let userRegisteredEvent: UserRegisteredEvent = value;
+              this.userRegisteredMessages.next(userRegisteredEvent);
+              break;
+            case 'UserRenamed':
+              let userRenamedEvent: UserRenamedEvent = value;
+              this.userRenamedMessages.next(userRenamedEvent);
+              break;
+            case 'UserDeleted':
+              let userDeletedEvent: UserDeletedEvent = value;
+              this.userDeletedMessages.next(userDeletedEvent);
+              break;
+          }
         }
       });
 
@@ -109,58 +130,83 @@ export class UserService extends ResourceManagement implements OnDestroy {
     this.userRegisteredMessages
       .pipe(takeUntil(this.preDestroy))
       .subscribe(userRegistered => this.handleUserRegisteredMessages(userRegistered));
-    this.userRenameMessages
+    this.userRenamedMessages
       .pipe(takeUntil(this.preDestroy))
-      .subscribe(userRename => this.handleUserRenameMessages(userRename));
+      .subscribe(userRenamed => this.handleUserRenamedMessages(userRenamed));
+    this.userDeletedMessages
+      .pipe(takeUntil(this.preDestroy))
+      .subscribe(userDeleted => this.handleUserDeletedMessages(userDeleted));
   }
 
   handleChangedUserPasswordMessages(changeUserPassword: ChangeUserPasswordEvent): void {
-    if (this.id.getValue() !== changeUserPassword.id) {
-      this.logout();
-      this.user.next(new User);
-      this.loggedIn.next(true);
+    if (changeUserPassword !== undefined) {
+      if (this.id.getValue() !== changeUserPassword.id) {
+        this.logout();
+        this.user.next(new User);
+        this.loggedIn.next(true);
+      }
     }
   }
 
   handleChangePasswordFailedMessages(changePasswordFailed: ChangePasswordFailedEvent): void {
+    if (changePasswordFailed !== undefined) {
+    }
   }
 
   handleLoggedInMessages(loggedIn: LoggedInEvent): void {
-    if (this.id.getValue() === loggedIn.id) {
-      let user = new User(loggedIn.id, loggedIn.email, loggedIn.name, loggedIn.token);
-      this.user.next(user);
-      this.loggedIn.next(true);
+    if (loggedIn !== undefined) {
+      if (this.id.getValue() === loggedIn.id) {
+        let user = new User(loggedIn.id, loggedIn.email, loggedIn.name, loggedIn.token);
+        this.user.next(user);
+        this.loggedIn.next(true);
+      }
     }
   }
 
   handleLoggedOutMessages(loggedOut: LoggedOutEvent): void {
-    if (this.id.getValue() === loggedOut.id) {
-      this.user.next(new User);
-      this.loggedIn.next(false);
-      this.registered.next(false);
-      this.router.navigate([this.loginPath]);
+    if (loggedOut !== undefined) {
+      if (this.id.getValue() === loggedOut.id) {
+        this.user.next(new User);
+        this.loggedIn.next(false);
+        this.registered.next(false);
+        this.reset();
+        this.router.navigate([this.loginPath]);
+      }
     }
   }
 
   handleLogginFailedMessages(logginFailed: LogginFailedEvent): void {
+    if (logginFailed !== undefined) {
+    }
   }
 
-  handleUserRenameMessages(userRename: UserRenameEvent): void {
-    let user = this.user.getValue();
-    if (user.email === userRename.email) {
-      if (user.userName !== userRename.userName) {
-        let changedUser = new User(user.id, user.email, userRename.userName, user.token);
-        this.user.next(changedUser);
+  handleUserRenamedMessages(userRenamed: UserRenamedEvent): void {
+    if (userRenamed !== undefined) {
+      let user = this.user.getValue();
+      if (user.email === userRenamed.email) {
+        if (user.userName !== userRenamed.name) {
+          let changedUser = new User(user.id, user.email, userRenamed.name, user.token);
+          this.user.next(changedUser);
+        }
       }
     }
   }
 
   handleUserRegisteredMessages(userRegistered: UserRegisteredEvent): void {
-    if (this.id.getValue() === userRegistered.id) {
-      this.registered.next(true);
-      // let user = new User(userRegistered.id, userRegistered.email, userRegistered.name);
-      // this.userRegistered.next(user);
+    if (userRegistered !== undefined) {
+      if (this.id.getValue() === userRegistered.id) {
+        this.registered.next(true);
+        // let user = new User(userRegistered.id, userRegistered.email, userRegistered.name);
+        // this.userRegistered.next(user);
+      }
+    }
+  }
 
+  handleUserDeletedMessages(userDeleted: UserDeletedEvent): void {
+    if (userDeleted !== undefined) {
+      if (this.user.getValue().email === userDeleted.email) {
+        // clean everything
+      }
     }
   }
 
@@ -180,13 +226,18 @@ export class UserService extends ResourceManagement implements OnDestroy {
   }
 
   changeUserPassword(email: string, oldPassword: string, newPassword: string): void {
-    let data = { "email": email, "oldPassword": oldPassword, "newPassword": newPassword }
+    let data = { "email": email, "oldPassword": oldPassword, "newPassword": newPassword };
     this.webSocketService.sendCommand('ChangeUserPassword', data);
   }
 
   renameUser(email: string, userName: string): void {
-    let data = { "email": email, "userName": userName }
+    let data = { "email": email, "userName": userName };
     this.webSocketService.sendCommand('RenameUser', data);
+  }
+
+  deleteUser(email: string): void {
+    let data = { "email": email };
+    this.webSocketService.sendCommand('DeleteUser', data);
   }
 
   getUser(): Observable<User> {

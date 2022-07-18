@@ -4,6 +4,12 @@ export class time {
     let dateTime = new Date();
     let min = dateTime.getMinutes();
     let hour = dateTime.getHours();
-    return "" + hour + ":" + min;
+    if (min <10){
+
+      return "" + hour + ":0" + min;
+    }else{
+      return "" + hour + ":" + min;
+
+    }
   }
 }

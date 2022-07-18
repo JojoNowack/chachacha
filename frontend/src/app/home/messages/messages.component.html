@@ -1,40 +1,32 @@
 <div class="container">
+
   <mat-list>
-    <mat-list-item *ngFor=" let chatMessage of currentChatMessages ">
+    <mat-list-item *ngFor=" let chatMessage of currentChatMessages.slice().reverse() " class="listElement">
       <div class="{{chatMessage.label}}">
         {{chatMessage.content}}
         <br>
         <span class="time{{chatMessage.label}}">{{chatMessage.date}}</span>
       </div>
-
     </mat-list-item>
-    {{getCurrentChatMessages()}}
-
-
   </mat-list>
 
-
   <div>
-    <form (ngSubmit)=" onSubmit($event)
-  " #messageForm="ngForm">
-
+    <form (ngSubmit)="onSubmit($event)" #messageForm="ngForm">
 
       <div class="form-group">
-        <mat-toolbar >
+        <mat-toolbar>
           <mat-toolbar-row>
             <table class="equalDivide" cellpadding="0" cellspacing="0" width="100%" border="0">
               <tr>
                 <td width="75%">
-                  <mat-form-field  appearance="standard" >
-                    <input type="text" matInput id="message" required [(ngModel)]="textInput"
-                           name="message" #name="ngModel"
-                           placeholder="Enter text here">
+                  <mat-form-field appearance="standard">
+                    <input type="text" matInput id="message" required [(ngModel)]="textInput" name="message"
+                      #name="ngModel" placeholder="Enter text here">
                   </mat-form-field>
                 </td>
                 <td width="25%">
-                  <button type="submit" mat-raised-button color="primary" name="Send"
-                          id="sendbutton"
-                          [disabled]="!messageForm.form.valid">
+                  <button type="submit" mat-raised-button color="primary" name="Send" id="sendbutton"
+                    [disabled]="!messageForm.form.valid">
                     Send Message
                   </button>
                 </td>
@@ -42,7 +34,6 @@
             </table>
           </mat-toolbar-row>
         </mat-toolbar>
-
 
       </div>
     </form>

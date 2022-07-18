@@ -25,8 +25,7 @@ export class LoginFormComponent extends ResourceManagement implements OnInit, On
   ngOnInit(): void {
     this.isLoggedIn();
     //todo rausnehmen
-    //setTimeout( () => {  this.userService.login("u1@test.de","1234") }, 1000 );
-
+    //setTimeout( () => {  this.userService.login("u1@test.de","12345") }, 1000 );
   }
 
   ngOnDestroy(): void {
@@ -53,11 +52,4 @@ export class LoginFormComponent extends ResourceManagement implements OnInit, On
   onSubmit(event: any) {
     this.userService.login(this.model.email, this.model.password);
   }
-
-  // getErrorMessage() {
-  //   if (this.email.hasError('required')) {
-  //     return 'You must enter a value';
-  //   }
-  //   return this.email.hasError('email') ? 'Not a valid email' : '';
-  // }
 }

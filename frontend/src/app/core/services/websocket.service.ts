@@ -8,8 +8,8 @@ import { SocketIdEvent } from '../models/backend-event-types';
 export class WebsocketService implements OnDestroy {
 
   private connection?: WebSocket;
-  private readonly messages = new ReplaySubject<MessageEvent>(1);
-  private readonly socketIdMessages = new ReplaySubject<SocketIdEvent>(1);
+  private readonly messages = new ReplaySubject<MessageEvent>(1, 1000);
+  private readonly socketIdMessages = new ReplaySubject<SocketIdEvent>(1, 1000);
   readonly id = new BehaviorSubject<number>(-1);
 
   constructor() {
@@ -17,11 +17,8 @@ export class WebsocketService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log("");
-    // this.messages.next(Null)
-
-    // this.preDestroy.next(true);
-    // this.preDestroy.complete();
+    this.messages.next(undefined as any);
+    this.socketIdMessages.next(undefined as any);
   }
 
   private initializeWebsocket() {
@@ -60,8 +57,6 @@ export class WebsocketService implements OnDestroy {
 
   onClose(message: any): void {
     console.log("onClose", message);
-
-    // reconnect?
   }
 
   sendCommand(type: string, data: any): this {
@@ -69,8 +64,9 @@ export class WebsocketService implements OnDestroy {
       type: type,
       value: data
     };
-    // @ts-ignore
-    this.connection.send(JSON.stringify(command));
+    if (this.connection) {
+      this.connection.send(JSON.stringify(command));
+    }
     return this;
   }
 

@@ -3,7 +3,11 @@ import {UserService} from 'src/app/core/services/user.service';
 import {ResourceManagement} from 'src/app/core/utils/resourceManagement';
 import {takeUntil} from 'rxjs/operators';
 import {User} from "../../core/models/chat-types";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {RoomService} from 'src/app/core/services/room.service';
+import {DialogRenameComponent} from "../dialoges/dialog-rename/dialog-rename.component";
+import {ComponentType} from "@angular/cdk/overlay";
+import {DialogChangePasswordComponent} from "../dialoges/dialog-change-password/dialog-change-password.component";
 
 @Component({
   selector: 'app-user',
@@ -12,14 +16,20 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class UserComponent extends ResourceManagement implements OnInit, OnDestroy {
   currentUser: User = new User;
-  newUserName: string ="";
-  constructor(private userService: UserService, public dialog: MatDialog) {
+  currentRoomName: string = "";
+  currentVoice: boolean = false;
+  currentOp: boolean = false;
+
+
+  constructor(private userService: UserService, private roomService: RoomService, public myDialog: MatDialog) {
     super();
   }
 
   ngOnInit(): void {
-    console.log("UserComponent onInit");
     this.getUser();
+    this.getCurrentRoomName();
+    this.getCurrentOps();
+    this.getCurrentVoices();
   }
 
   ngOnDestroy(): void {
@@ -32,19 +42,85 @@ export class UserComponent extends ResourceManagement implements OnInit, OnDestr
       .pipe(takeUntil(this.preDestroy))
       .subscribe(user => {
         this.currentUser = user;
+
+      })
+  }
+
+  getCurrentRoomName(): void {
+    this.roomService
+      .getCurrentRoomName()
+      .pipe(takeUntil(this.preDestroy))
+      .subscribe(currentRoomName => {
+        this.currentRoomName = currentRoomName;
+      })
+  }
+
+  getCurrentOps(): void {
+    this.roomService
+      .getCurrentOps()
+      .pipe(takeUntil(this.preDestroy))
+      .subscribe(opArray => {
+        let currentOp = opArray.filter(user => user.email === this.currentUser.email);
+        if (currentOp.length !== 0) {
+          this.currentOp = currentOp[0].op;
+        } else {
+          this.currentOp = false;
+        }
+      })
+  }
+
+  getCurrentVoices(): void {
+    this.roomService
+      .getCurrentVoices()
+      .pipe(takeUntil(this.preDestroy))
+      .subscribe(voiceArray => {
+        let currentVoice = voiceArray.filter(user => user.email === this.currentUser.email);
+        if (currentVoice.length !== 0) {
+          this.currentVoice = currentVoice[0].voice;
+        } else {
+          this.currentVoice = false;
+        }
       })
   }
 
   logoutButtonClicked() {
-    //todo @simon sollten wir da noch mehr machen?
+    //todo confirm-dialog
     this.userService.logout();
   }
 
+  grantOpClicked(email: string, op: boolean): void {
+    this.roomService.grantOp(this.currentRoomName, email, op);
+  }
+
+  grantVoiceClicked(email: string, voice: boolean): void {
+    this.roomService.grantVoice(this.currentRoomName, email, voice);
+  }
+
   changeUserNameButtonClicked() {
-    //this.userService.renameUser("test","test");
-   //todo dialog
+    this.openDialog(DialogRenameComponent);
+    console.log("changeUserNameButtonClicked");
+
+  }
+
+  openDialog(myCustomDialog: ComponentType<any>) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    this.myDialog.open(myCustomDialog, dialogConfig);
   }
 
 
+  changePasswordButtonClicked() {
+    //todo dialog
+    this.openDialog(DialogChangePasswordComponent);
+    console.log("changePasswordButtonClicked");
+
+
+  }
+
+  deleteUserButtonClicked(): void {
+    //todo backend
+    this.userService.deleteUser(this.currentUser.email);
+  }
 
 }

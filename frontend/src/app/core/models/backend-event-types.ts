@@ -77,6 +77,10 @@ export interface UserRegisteredEvent extends UserEvent {
   newSha1PWH: string;
 }
 
-export interface UserRenameEvent extends UserEvent {
-  userName: string;
+export interface UserRenamedEvent extends UserEvent {
+  name: string;
+}
+
+export interface UserDeletedEvent extends UserEvent {
+  email: string;
 }

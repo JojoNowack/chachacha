@@ -47,11 +47,4 @@ export class RegisterFormComponent extends ResourceManagement implements OnInit,
     this.userService.registerUser(this.model.email, this.model.username, this.model.password);
     //this.model={email: "", username: "", password: ""};
   }
-
-  // getErrorMessage() {
-  //   if (this.email.hasError('required')) {
-  //     return 'You must enter a value';
-  //   }
-  //   return this.email.hasError('email') ? 'Not a valid email' : '';
-  // }
 }

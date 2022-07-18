@@ -30,7 +30,7 @@ export class User {
   }
 }
 
-//public im constructor davor und dann kann man sich das doppelte sparen glaub ich
+// deprecated
 export class Room {
   roomName: string;
   users: { [email: string]: string };
@@ -62,22 +62,27 @@ export class Room {
 }
 
 export class ChatMessage {
-  private static counter: number = 0;
   userName: string;
   content: string;
+  date?: string;
   label?: string;
-  readonly id?: number;
-  ack: boolean;
 
-  constructor(userName: string, content: string, public date: string, label?: string, ack: boolean = false) {
+  constructor(userName: string = "", content: string = "", date?: string, label?: string) {
     this.userName = userName;
     this.content = content;
+    this.date = date;
     this.label = label;
-    this.id = ChatMessage.counter++;
-    this.ack = ack;
   }
 
   setLabel(label: string) {
     this.label = label;
+  }
+
+  isEmpty(): boolean {
+    if (this.userName === "" && this.content === "") {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
