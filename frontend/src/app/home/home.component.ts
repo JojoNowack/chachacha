@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { RoomService } from '../core/services/room.service';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [RoomService],
 })
 export class HomeComponent {
-
-  constructor() { }
+  title = 'ChaChaChat';
+  constructor(private titleService: Title) {
+    this.titleService.setTitle(this.title);
+  }
 }

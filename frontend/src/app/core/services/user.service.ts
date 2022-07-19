@@ -205,7 +205,11 @@ export class UserService extends ResourceManagement implements OnDestroy {
   handleUserDeletedMessages(userDeleted: UserDeletedEvent): void {
     if (userDeleted !== undefined) {
       if (this.user.getValue().email === userDeleted.email) {
-        // clean everything
+        this.user.next(new User);
+        this.loggedIn.next(false);
+        this.registered.next(false);
+        this.reset();
+        this.router.navigate([this.loginPath]);
       }
     }
   }

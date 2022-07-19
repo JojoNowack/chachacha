@@ -4,6 +4,7 @@ import { ReplaySubject } from 'rxjs';
 import {
   InvitedOfRoomRequiredEvent,
   InvitedToRoomEvent,
+  KickedEvent,
   MessageSentToRoomEvent,
   OpGrantedEvent,
   RoomJoinedEvent,
@@ -18,10 +19,12 @@ import { UserService } from './user.service';
 import { ChatMessage, Room, User } from '../models/chat-types';
 import { time } from '../utils/time';
 import { ResourceManagement } from '../utils/resourceManagement';
+import { HomeModule } from 'src/app/home/home.module';
 
 @Injectable()
 export class RoomService extends ResourceManagement implements OnDestroy {
 
+  private readonly kickedMessages = new ReplaySubject<KickedEvent>();
   private readonly invitedOfRoomRequiredMessages = new ReplaySubject<InvitedOfRoomRequiredEvent>();
   private readonly invitedToRoomMessages = new ReplaySubject<InvitedToRoomEvent>();
   private readonly messageSentToRoomMessages = new ReplaySubject<MessageSentToRoomEvent>();
@@ -97,6 +100,10 @@ export class RoomService extends ResourceManagement implements OnDestroy {
           let type: string = data.type;
           let value = data.value;
           switch (type) {
+            case 'Kicked':
+              let kickedEvent: KickedEvent = value;
+              this.kickedMessages.next(kickedEvent);
+              break;
             case 'InvitedOfRoomRequired':
               let invitedOfRoomRequiredEvent: InvitedOfRoomRequiredEvent = value;
               this.invitedOfRoomRequiredMessages.next(invitedOfRoomRequiredEvent);
@@ -133,6 +140,9 @@ export class RoomService extends ResourceManagement implements OnDestroy {
         }
       });
 
+    this.kickedMessages
+      .pipe(takeUntil(this.preDestroy))
+      .subscribe(kicked => this.handleKickedMessages(kicked));
     this.invitedOfRoomRequiredMessages
       .pipe(takeUntil(this.preDestroy))
       .subscribe(invitedOfRoomRequired => this.handleInvitedOfRoomRequiredMessages(invitedOfRoomRequired));
@@ -180,6 +190,10 @@ export class RoomService extends ResourceManagement implements OnDestroy {
       currentRoomNotifications[roomName] = currentNotifications;
       this.roomNotifications.next(currentRoomNotifications);
     }
+  }
+
+  handleKickedMessages(kicked: KickedEvent): void {
+    this.handleRoomLeftMessages({ roomName: kicked.roomName, email: kicked.email });
   }
 
   handleInvitedOfRoomRequiredMessages(invitedOfRoomRequired: InvitedOfRoomRequiredEvent): void {
@@ -402,6 +416,11 @@ export class RoomService extends ResourceManagement implements OnDestroy {
       this.currentVoiceInRoomRequired.next(voiceInRoomRequired.voice);
     }
     this.roomVoiceInRoomRequired.next(currentVoiceInRoomRequired);
+  }
+
+  kick(roomName: string, email: string) {
+    let data = { "roomName": roomName, "email": email };
+    this.webSocketService.sendCommand('Kick', data);
   }
 
   joinRoom(roomName: string): void {

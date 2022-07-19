@@ -1,10 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ResourceManagement} from "../../../core/utils/resourceManagement";
-import {UserComponent} from "../../user/user.component";
-import {UserService} from "../../../core/services/user.service";
-import {MatDialogRef} from "@angular/material/dialog";
-import {takeUntil} from "rxjs/operators";
-import {User} from "../../../core/models/chat-types";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ResourceManagement } from "../../../core/utils/resourceManagement";
+import { UserService } from "../../../core/services/user.service";
+import { takeUntil } from "rxjs/operators";
+import { User } from "../../../core/models/chat-types";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-dialog-rename',
@@ -21,11 +20,9 @@ export class DialogRenameComponent extends ResourceManagement implements OnInit,
 
   ngOnInit(): void {
     this.getUser();
-    console.log("DialogRenameComponent init");
   }
 
   ngOnDestroy(): void {
-    console.log("Dialog destroy");
     this.destroy();
   }
 

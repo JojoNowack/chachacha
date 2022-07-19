@@ -11,6 +11,10 @@ export interface RoomEvent {
   roomName: string;
 }
 
+export interface KickedEvent extends RoomEvent {
+  email: string;
+}
+
 export interface InvitedOfRoomRequiredEvent extends RoomEvent {
   inviteRequired: boolean;
 }

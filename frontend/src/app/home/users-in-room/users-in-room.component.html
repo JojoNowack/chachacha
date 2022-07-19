@@ -7,7 +7,7 @@
         <span> &nbsp; &nbsp; Room: {{currentRoomName}}</span>
         &nbsp; &nbsp;
 
-       |
+        |
         <!-- <mat-icon>group icon</mat-icon> -->
         <!-- <button type="submit" mat-button name="Users" (click)="logCurrentUsers()">Users</button> -->
         <span>&nbsp; Users: <span *ngFor="let user of currentUsers">
@@ -26,32 +26,31 @@
                   <span>{{user.name}}</span>
                 </button> -->
 
-                <span class="btn-link button" [matMenuTriggerFor]="menu">&nbsp;{{user.name}}   <span *ngIf="checkOp(user.email)">
-                  <span>&nbsp;<mat-icon>star</mat-icon></span>
-                </span>
-                 <span *ngIf="!checkOp(user.email)">
-                  <span>&nbsp;<mat-icon>star_border</mat-icon></span>
-                </span>
+                <span class="btn-link button" [matMenuTriggerFor]="menu">&nbsp;{{user.name}} <span
+                    *ngIf="checkOp(user.email)">
+                    <span>&nbsp;<mat-icon>star</mat-icon></span>
+                  </span>
+                  <span *ngIf="!checkOp(user.email)">
+                    <span>&nbsp;<mat-icon>star_border</mat-icon></span>
+                  </span>
 
-                <span *ngIf="checkVoice(user.email)">
-                  <span>&nbsp; <mat-icon>record_voice_over</mat-icon></span>
-                </span>
-                 <span *ngIf="!checkVoice(user.email)">
-                  <span>&nbsp; <mat-icon>voice_over_off</mat-icon></span>
-                </span>
+                  <span *ngIf="checkVoice(user.email)">
+                    <span>&nbsp; <mat-icon>record_voice_over</mat-icon></span>
+                  </span>
+                  <span *ngIf="!checkVoice(user.email)">
+                    <span>&nbsp; <mat-icon>voice_over_off</mat-icon></span>
+                  </span>
                 </span>
 
                 <mat-menu #menu="matMenu">
 
-                  <ng-container
-                    *ngIf="checkOp(currentUser.email); then showOptions; else showNoOptions">
+                  <ng-container *ngIf="checkOp(currentUser.email); then showOptions; else showNoOptions">
                   </ng-container>
 
                   <ng-template #showOptions>
 
 
-                    <ng-container
-                      *ngIf="!checkVoice(user.email); then grantVoiceOption; else takeVoiceOption">
+                    <ng-container *ngIf="!checkVoice(user.email); then grantVoiceOption; else takeVoiceOption">
                     </ng-container>
 
                     <ng-template #grantVoiceOption>
@@ -68,8 +67,7 @@
                       </button>
                     </ng-template>
 
-                    <ng-container
-                      *ngIf="!checkOp(user.email); then grantOpOption; else takeOpOption">
+                    <ng-container *ngIf="!checkOp(user.email); then grantOpOption; else takeOpOption">
                     </ng-container>
 
                     <ng-template #grantOpOption>
@@ -85,6 +83,11 @@
                         <span>Take Op</span>
                       </button>
                     </ng-template>
+
+                    <button mat-menu-item (click)="kickedClicked(user.email)">
+                      <mat-icon>lock</mat-icon>
+                      <span>Kick</span>
+                    </button>
 
                   </ng-template>
 
@@ -106,7 +109,7 @@
 
             </span>
 
-          <!--
+            <!--
         <span *ngIf="user.email !== currentUser.email">
           {{user.name}}&nbsp;
         </span>
@@ -139,14 +142,14 @@
           <ng-template #grantVoiceOption>
             <button mat-menu-item (click)="grantVoiceClicked(currentUser.email, true)">
               <mat-icon>record_voice_over</mat-icon>
-              <span>Grant me voice</span>
+              <span>Grant me Voice</span>
             </button>
           </ng-template>
 
           <ng-template #takeVoiceOption>
             <button mat-menu-item (click)="grantVoiceClicked(currentUser.email, false)">
               <mat-icon>voice_over_off</mat-icon>
-              <span>Take my voice</span>
+              <span>Take my Voice</span>
             </button>
           </ng-template>
 
@@ -156,14 +159,14 @@
           <ng-template #grantOpOption>
             <button mat-menu-item (click)="grantOpClicked(currentUser.email, true)">
               <mat-icon>lock_open</mat-icon>
-              <span>Grant me op</span>
+              <span>Grant me Op</span>
             </button>
           </ng-template>
 
           <ng-template #takeOpOption>
             <button mat-menu-item (click)="grantOpClicked(currentUser.email, false)">
               <mat-icon>lock</mat-icon>
-              <span>Take my op</span>
+              <span>Take my Op</span>
             </button>
           </ng-template>
 

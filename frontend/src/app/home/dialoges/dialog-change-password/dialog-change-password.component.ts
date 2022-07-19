@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../../../core/services/user.service";
-import {ResourceManagement} from "../../../core/utils/resourceManagement";
-import {User} from "../../../core/models/chat-types";
-import {takeUntil} from "rxjs/operators";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from "../../../core/services/user.service";
+import { ResourceManagement } from "../../../core/utils/resourceManagement";
+import { User } from "../../../core/models/chat-types";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: 'app-dialog-change-password',
@@ -20,7 +20,6 @@ export class DialogChangePasswordComponent extends ResourceManagement implements
 
   ngOnInit(): void {
     this.getUser();
-    console.log("DialogChangePasswordComponent init");
   }
 
   getUser(): void {
@@ -33,7 +32,6 @@ export class DialogChangePasswordComponent extends ResourceManagement implements
   }
 
   ngOnDestroy(): void {
-    console.log("Dialog destroy");
     this.destroy();
   }
 

@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from 'src/app/core/services/user.service';
-import {ResourceManagement} from 'src/app/core/utils/resourceManagement';
-import {takeUntil} from 'rxjs/operators';
-import {User} from "../../core/models/chat-types";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {RoomService} from 'src/app/core/services/room.service';
-import {DialogRenameComponent} from "../dialoges/dialog-rename/dialog-rename.component";
-import {ComponentType} from "@angular/cdk/overlay";
-import {DialogChangePasswordComponent} from "../dialoges/dialog-change-password/dialog-change-password.component";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from 'src/app/core/services/user.service';
+import { ResourceManagement } from 'src/app/core/utils/resourceManagement';
+import { takeUntil } from 'rxjs/operators';
+import { User } from "../../core/models/chat-types";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { RoomService } from 'src/app/core/services/room.service';
+import { DialogRenameComponent } from "../dialoges/dialog-rename/dialog-rename.component";
+import { ComponentType } from "@angular/cdk/overlay";
+import { DialogChangePasswordComponent } from "../dialoges/dialog-change-password/dialog-change-password.component";
 
 @Component({
   selector: 'app-user',
@@ -84,22 +84,11 @@ export class UserComponent extends ResourceManagement implements OnInit, OnDestr
   }
 
   logoutButtonClicked() {
-    //todo confirm-dialog
     this.userService.logout();
-  }
-
-  grantOpClicked(email: string, op: boolean): void {
-    this.roomService.grantOp(this.currentRoomName, email, op);
-  }
-
-  grantVoiceClicked(email: string, voice: boolean): void {
-    this.roomService.grantVoice(this.currentRoomName, email, voice);
   }
 
   changeUserNameButtonClicked() {
     this.openDialog(DialogRenameComponent);
-    console.log("changeUserNameButtonClicked");
-
   }
 
   openDialog(myCustomDialog: ComponentType<any>) {
@@ -109,18 +98,11 @@ export class UserComponent extends ResourceManagement implements OnInit, OnDestr
     this.myDialog.open(myCustomDialog, dialogConfig);
   }
 
-
   changePasswordButtonClicked() {
-    //todo dialog
     this.openDialog(DialogChangePasswordComponent);
-    console.log("changePasswordButtonClicked");
-
-
   }
 
   deleteUserButtonClicked(): void {
-    //todo backend
     this.userService.deleteUser(this.currentUser.email);
   }
-
 }

@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RoomService} from "../../core/services/room.service";
-import {ChatMessage, Room} from "../../core/models/chat-types";
-import {ResourceManagement} from 'src/app/core/utils/resourceManagement';
-import {takeUntil} from 'rxjs';
-import {UserService} from 'src/app/core/services/user.service';
-import {DialogChangePasswordComponent} from "../dialoges/dialog-change-password/dialog-change-password.component";
-import {ComponentType} from "@angular/cdk/overlay";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {DialogInviteToRoomComponent} from "../dialoges/dialog-invite-to-room/dialog-invite-to-room.component";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { RoomService } from "../../core/services/room.service";
+import { ChatMessage, Room } from "../../core/models/chat-types";
+import { ResourceManagement } from 'src/app/core/utils/resourceManagement';
+import { takeUntil } from 'rxjs';
+import { UserService } from 'src/app/core/services/user.service';
+import { ComponentType } from "@angular/cdk/overlay";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { DialogInviteToRoomComponent } from "../dialoges/dialog-invite-to-room/dialog-invite-to-room.component";
+import { DialogUninviteToRoomComponent } from '../dialoges/dialog-uninvite-to-room/dialog-uninvite-to-room.component';
 
 @Component({
   selector: 'app-rooms',
@@ -19,7 +19,7 @@ export class RoomsComponent extends ResourceManagement implements OnInit, OnDest
   rooms: Room[] = [];
   currentRoomNames: string[] = [];
   currentRoomName: string = "";
-  currentUser: { email: string, name: string } = {email: "", name: ""};
+  currentUser: { email: string, name: string } = { email: "", name: "" };
   newRoomName: string = "";
   inviteEmail: string = "";
   currentOp: boolean = false;
@@ -28,7 +28,7 @@ export class RoomsComponent extends ResourceManagement implements OnInit, OnDest
   newChatMessage = new ChatMessage();
   roomNotifications: { [roomName: string]: number } = {};
 
-  constructor(private userService: UserService, private roomService: RoomService,private myDialog: MatDialog ) {
+  constructor(private userService: UserService, private roomService: RoomService, private myDialog: MatDialog) {
     super();
   }
 
@@ -42,46 +42,7 @@ export class RoomsComponent extends ResourceManagement implements OnInit, OnDest
     this.getNewChatMessage();
     this.getRoomNotifications();
 
-    //wenn man testet
-    if (true) {
-      setTimeout(() => {
-        this.roomService.joinRoom("Sportgruppe")
-      }, 1000);
-      setTimeout(() => {
-        this.roomService.joinRoom("Schachgruppe")
-      }, 1000);
-      setTimeout(() => {
-        this.roomService.joinRoom("Mathe")
-      }, 1000);
-      setTimeout(() => {
-        this.roomService.joinRoom("Theo")
-      }, 1000);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Hi");
-      }, 1500);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec mollis. Quisque convallis libero in sapien pharetra tincidunt. Aliquam elit ante, malesuada id, tempor eu, gravida id, odio. Maecenas suscipit, risus et eleifend imperdiet, nisi orci ullamcorper massa, et adipiscing orci velit quis magna.");
-      }, 1500);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Praesent sit amet ligula id orci venenatis auctor. Phasellus porttitor, metus non tincidunt dapibus, orci pede pretium neque, sit amet adipiscing ipsum lectus et libero. Aenean bibendum. Curabitur mattis quam id urna. Vivamus dui. Donec nonummy lacinia lorem.");
-      }, 1600);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Cras risus arcu, sodales ac, ultrices ac, mollis quis, justo. Sed a libero. Quisque risus erat, posuere at, tristique non, lacinia quis, eros.");
-      }, 1700);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
-      }, 1800);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
-      }, 1800);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
-      }, 1800);
-      setTimeout(() => {
-        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
-      }, 1800);
-
-    }
+    this.doSendTestEvents(false);
   }
 
   ngOnDestroy(): void {
@@ -110,7 +71,7 @@ export class RoomsComponent extends ResourceManagement implements OnInit, OnDest
     this.userService.getUser()
       .pipe(takeUntil(this.preDestroy))
       .subscribe(user => {
-        this.currentUser = {email: user.email, name: user.userName};
+        this.currentUser = { email: user.email, name: user.userName };
       })
   }
 
@@ -187,10 +148,11 @@ export class RoomsComponent extends ResourceManagement implements OnInit, OnDest
   }
 
   inviteToRoomItemClicked(roomName: string, invite: boolean) {
-
-    this.openDialog(DialogInviteToRoomComponent);
-    console.log("inviteToRoomItemClicked");
-
+    if (invite) {
+      this.openDialog(DialogInviteToRoomComponent);
+    } else {
+      this.openDialog(DialogUninviteToRoomComponent);
+    }
   }
 
   openDialog(myCustomDialog: ComponentType<any>) {
@@ -198,5 +160,46 @@ export class RoomsComponent extends ResourceManagement implements OnInit, OnDest
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     this.myDialog.open(myCustomDialog, dialogConfig);
+  }
+
+  doSendTestEvents(test: boolean) {
+    if (test) {
+      setTimeout(() => {
+        this.roomService.joinRoom("Sportgruppe")
+      }, 1000);
+      setTimeout(() => {
+        this.roomService.joinRoom("Schachgruppe")
+      }, 1000);
+      setTimeout(() => {
+        this.roomService.joinRoom("Mathe")
+      }, 1000);
+      setTimeout(() => {
+        this.roomService.joinRoom("Theo")
+      }, 1000);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Hi");
+      }, 1500);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec mollis. Quisque convallis libero in sapien pharetra tincidunt. Aliquam elit ante, malesuada id, tempor eu, gravida id, odio. Maecenas suscipit, risus et eleifend imperdiet, nisi orci ullamcorper massa, et adipiscing orci velit quis magna.");
+      }, 1500);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Praesent sit amet ligula id orci venenatis auctor. Phasellus porttitor, metus non tincidunt dapibus, orci pede pretium neque, sit amet adipiscing ipsum lectus et libero. Aenean bibendum. Curabitur mattis quam id urna. Vivamus dui. Donec nonummy lacinia lorem.");
+      }, 1600);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Cras risus arcu, sodales ac, ultrices ac, mollis quis, justo. Sed a libero. Quisque risus erat, posuere at, tristique non, lacinia quis, eros.");
+      }, 1700);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
+      }, 1800);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
+      }, 1800);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
+      }, 1800);
+      setTimeout(() => {
+        this.roomService.sendMessageToRoom("Theo", "Cras volutpat, lacus quis semper pharetra, nisi enim dignissim est, et sollicitudin quam ipsum vel mi. Sed commodo urna ac urna. Nullam eu tortor. Curabitur sodales scelerisque magna. Donec ultricies tristique pede. Nullam libero. Nam sollicitudin felis vel metus. Nullam posuere molestie metus. Nullam molestie, nunc id suscipit rhoncus, felis mi vulputate lacus, a ultrices tortor dolor eget augue. Aenean ultricies felis ut turpis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Suspendisse placerat tellus ac nulla. Proin adipiscing sem ac risus. Maecenas nisi. Cras semper.");
+      }, 1800);
+    }
   }
 }

@@ -14,7 +14,8 @@ import { ResourceManagement } from 'src/app/core/utils/resourceManagement';
 export class RegisterFormComponent extends ResourceManagement implements OnInit, OnDestroy {
 
   // email = new FormControl('', [Validators.required, Validators.email]);
-  model = { email: "newUser@test.de", username: "newUser", password: "1234" };
+  // model = { email: "newUser@test.de", username: "newUser", password: "1234" };
+  model = { email: "", username: "", password: "" };
   registered: boolean = false;
   loginPath = "/login"
 
@@ -45,6 +46,6 @@ export class RegisterFormComponent extends ResourceManagement implements OnInit,
 
   onSubmit(event: any) {
     this.userService.registerUser(this.model.email, this.model.username, this.model.password);
-    //this.model={email: "", username: "", password: ""};
+    this.model = { email: "", username: "", password: "" };
   }
 }

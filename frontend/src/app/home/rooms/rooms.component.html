@@ -6,12 +6,11 @@
 
     <mat-toolbar-row>
       <mat-form-field appearance="standard" id="inputForm">
-        <input type="text" matInput id="roomName" required [(ngModel)]="newRoomName" name="roomName"
-               #name="ngModel"
-               placeholder="Enter new roomname">
+        <input type="text" matInput id="roomName" required [(ngModel)]="newRoomName" name="roomName" #name="ngModel"
+          placeholder="New roomname">
       </mat-form-field>
 
-      <button type="submit" mat-raised-button color="primary" name="newRoom"   [disabled]="!roomsForm.form.valid">
+      <button type="submit" mat-raised-button color="primary" name="newRoom" [disabled]="!roomsForm.form.valid">
         Join Room
       </button>
     </mat-toolbar-row>
@@ -44,8 +43,7 @@
           <ng-template #showOptions>
 
 
-            <ng-container
-              *ngIf="!currentVoiceInRoomRequired; then setVoiceOption; else unsetVoiceOption">
+            <ng-container *ngIf="!currentVoiceInRoomRequired; then setVoiceOption; else unsetVoiceOption">
             </ng-container>
 
             <ng-template #setVoiceOption>
@@ -62,8 +60,7 @@
               </button>
             </ng-template>
 
-            <ng-container
-              *ngIf="!currentInviteRequired; then setInviteOption; else unsetInviteOption">
+            <ng-container *ngIf="!currentInviteRequired; then setInviteOption; else unsetInviteOption">
             </ng-container>
 
             <ng-template #setInviteOption>
@@ -82,12 +79,12 @@
 
             <button mat-menu-item (click)="inviteToRoomItemClicked(roomName, true)">
               <mat-icon>insert_invitation</mat-icon>
-              <span>Invite u1 To Room</span>
+              <span>Invite To Room</span>
             </button>
 
             <button mat-menu-item (click)="inviteToRoomItemClicked(roomName, false)">
               <mat-icon>do_not_touch</mat-icon>
-              <span>Uninvite u1 To Room</span>
+              <span>Uninvite To Room</span>
             </button>
 
           </ng-template>

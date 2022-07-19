@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RoomService} from "../../core/services/room.service";
-import {takeUntil} from "rxjs/operators";
-import {ResourceManagement} from "../../core/utils/resourceManagement";
-import {UserService} from 'src/app/core/services/user.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { RoomService } from "../../core/services/room.service";
+import { takeUntil } from "rxjs/operators";
+import { ResourceManagement } from "../../core/utils/resourceManagement";
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-users-in-room',
@@ -12,7 +12,7 @@ import {UserService} from 'src/app/core/services/user.service';
 export class UsersInRoomComponent extends ResourceManagement implements OnInit, OnDestroy {
 
   currentRoomName: string = "";
-  currentUser: { email: string, name: string } = {email: "", name: ""};
+  currentUser: { email: string, name: string } = { email: "", name: "" };
   currentUsers: { email: string, name: string }[] = [];
   selectedUser?: { email: string, name: string };
   currentOps: { email: string, op: boolean }[] = [];
@@ -49,7 +49,7 @@ export class UsersInRoomComponent extends ResourceManagement implements OnInit, 
     this.userService.getUser()
       .pipe(takeUntil(this.preDestroy))
       .subscribe(user => {
-        this.currentUser = {email: user.email, name: user.userName};
+        this.currentUser = { email: user.email, name: user.userName };
       })
   }
 
@@ -114,6 +114,10 @@ export class UsersInRoomComponent extends ResourceManagement implements OnInit, 
 
   grantVoiceClicked(email: string, voice: boolean): void {
     this.roomService.grantVoice(this.currentRoomName, email, voice);
+  }
+
+  kickedClicked(email: string): void {
+    this.roomService.kick(this.currentRoomName, email);
   }
 
   onSelect(user: { email: string, name: string }): void {

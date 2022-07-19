@@ -4,11 +4,11 @@ import { takeUntil } from "rxjs/operators";
 import { RoomService } from "../../../core/services/room.service";
 
 @Component({
-  selector: 'app-dialog-invite-to-room',
-  templateUrl: './dialog-invite-to-room.component.html',
-  styleUrls: ['./dialog-invite-to-room.component.css']
+  selector: 'app-dialog-uninvite-to-room',
+  templateUrl: './dialog-uninvite-to-room.component.html',
+  styleUrls: ['./dialog-uninvite-to-room.component.css']
 })
-export class DialogInviteToRoomComponent extends ResourceManagement implements OnInit, OnDestroy {
+export class DialogUninviteToRoomComponent extends ResourceManagement implements OnInit, OnDestroy {
   public inviteEmail: string = "";
   public currentRoomName: string = "";
 
@@ -24,9 +24,9 @@ export class DialogInviteToRoomComponent extends ResourceManagement implements O
     this.destroy();
   }
 
-  inviteFriendButtonClicked() {
+  uninviteFriendButtonClicked() {
     if (this.inviteEmail !== "") {
-      this.roomService.inviteToRoom(this.currentRoomName, this.inviteEmail, true);
+      this.roomService.inviteToRoom(this.currentRoomName, this.inviteEmail, false);
     }
     this.inviteEmail = "";
   }

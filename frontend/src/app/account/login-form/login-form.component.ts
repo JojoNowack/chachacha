@@ -3,6 +3,8 @@ import { UserService } from "../../core/services/user.service";
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { ResourceManagement } from 'src/app/core/utils/resourceManagement';
+import { Title } from "@angular/platform-browser";
+
 // import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -14,18 +16,20 @@ import { ResourceManagement } from 'src/app/core/utils/resourceManagement';
 export class LoginFormComponent extends ResourceManagement implements OnInit, OnDestroy {
 
   // email = new FormControl('', [Validators.required, Validators.email]);
-  model = { email: "phe@test.de", password: "1234" };
+  // model = { email: "phe@test.de", password: "1234" };
+  model = { email: "", password: "" };
   loggedIn: boolean = false;
   homePath = "/home";
 
-  constructor(private userService: UserService, private router: Router) {
+  title = 'Login to ChaChaChat';
+
+  constructor(private userService: UserService, private router: Router, private titleService: Title) {
     super();
   }
 
   ngOnInit(): void {
     this.isLoggedIn();
-    //todo rausnehmen
-    //setTimeout( () => {  this.userService.login("u1@test.de","12345") }, 1000 );
+    this.titleService.setTitle(this.title);
   }
 
   ngOnDestroy(): void {
@@ -51,5 +55,6 @@ export class LoginFormComponent extends ResourceManagement implements OnInit, On
 
   onSubmit(event: any) {
     this.userService.login(this.model.email, this.model.password);
+    this.model = { email: "", password: "" };
   }
 }
