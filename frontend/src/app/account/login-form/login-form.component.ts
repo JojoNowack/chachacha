@@ -55,6 +55,5 @@ export class LoginFormComponent extends ResourceManagement implements OnInit, On
 
   onSubmit(event: any) {
     this.userService.login(this.model.email, this.model.password);
-    this.model = { email: "", password: "" };
   }
 }
