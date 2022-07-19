@@ -1,0 +1,41 @@
+<p>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <mat-icon>account_circle</mat-icon>
+      <span> &nbsp;{{currentUser.userName}}&nbsp;</span>
+      <span *ngIf="!currentOp">&nbsp;<mat-icon>star_border</mat-icon></span>
+      <span *ngIf="currentOp">&nbsp;<mat-icon>star</mat-icon></span>
+      <span *ngIf="currentVoice">
+        <mat-icon>record_voice_over</mat-icon>
+      </span>
+      <span *ngIf="!currentVoice">
+        <mat-icon>voice_over_off</mat-icon>
+      </span>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu" id="menutoright" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+
+
+
+        <button mat-menu-item (click)="changeUserNameButtonClicked()">
+          <mat-icon>assignment_ind</mat-icon>
+          <span>Change my Username</span>
+        </button>
+        <button mat-menu-item (click)="changePasswordButtonClicked()">
+          <mat-icon>security</mat-icon>
+          <span>Change my Password</span>
+        </button>
+        <button mat-menu-item (click)="logoutButtonClicked()">
+          <mat-icon>no_meeting_room</mat-icon>
+          <span>Logout</span>
+        </button>
+        <button mat-menu-item (click)="deleteUserButtonClicked()">
+          <mat-icon>restore_from_trash</mat-icon>
+          <span>Delete User</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</p>

@@ -24,22 +24,18 @@ jobs:
         with:
           node-version: '16.x'
           
-      - name: change server and dir
+      - name: change server ip in websocket.service.ts from localhost to public ip
         run: |           
-           sed -i 's/localhost/${{secrets.DEPLOYIP}}/g' ./frontend/src/app/websocket.service.ts
+           sed -i 's/localhost/${{secrets.DEPLOYIP}}/g' ./frontend/src/app/core/services/websocket.service.ts
 
-      - name: npm install, build, and lint
+      - name: npm install,test, lint,  build
         run: |
           cd frontend
           npm install
-          npm run build --if-present
+          npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
           npm run lint --if-present
-          #npm run test --if-present
-          
-      - name: list files
-        run: |
-          pwd
-          ls
+          npm run build --if-present
+      
           
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
