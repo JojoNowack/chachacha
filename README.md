@@ -3,10 +3,10 @@
 Alle wichtigen Details sind im privaten Bericht enthalten.
 
 ## Zweck
-Dieses Repo ist zur Erpobung einer CICD Pipeline für ein Angular Projekt.
+Dieses Repo existiert zur Erpobung einer CICD Pipeline für ein Angular Projekt.
 
 ## Hinweis
-Nur Datein im Branch buildOnAzure werden automatisch getestet, gebaut und ausgeliefert.
+Nur Dateien im Branch buildOnAzure werden automatisch getestet, gebaut und ausgeliefert.
 ## Benutzung
 Hierhin wird deployed: http://chachachat.azurewebsites.net/home
 
